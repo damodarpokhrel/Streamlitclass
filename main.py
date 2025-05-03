@@ -11,7 +11,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 
-st.title("Broadway infosis app")
+st.title("Damodar Pokhrel app")
 st.write("Explore different classifiers and dataset which one is best for you")
 dataset = st.selectbox("Select dataset", ["Iris", "Wine", "Breast Cancer"])
 st.write(f"## {dataset} dataset")
