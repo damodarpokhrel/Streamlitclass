@@ -1,9 +1,6 @@
 Streamlit
-class work
-streamlit
 pandas
 scikit-learn
 plotly
 numpy
-pandas
 matplotlib
