@@ -1,36 +1,26 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.decomposition import PCA
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.svm import SVC
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.datasets import load_iris, load_wine, load_breast_cancer
+import plotly.express as px
+from sklearn.datasets import load_iris
 
 st.title("Broadway infosis app")
 st.write("Explore different classifiers and dataset which one is best for you")
 dataset = st.selectbox("Select dataset", ["Iris", "Wine", "Breast Cancer"])
-st.write(f"## {dataset_name} dataset")
-classifier_name = st.slidebar.selectbox('Select classifier', ['KNN', 'SVM', 'Random Forest'])
+st.write(f"## {dataset} dataset")
+classifier_name = st.sidebar.selectbox('Select classifier', ['KNN', 'SVM', 'Random Forest'])
 
 def get_dataset(dataset_name):
     if dataset_name == 'Iris':
-        iris = datasets.load_iris()
-        X = iris.data
-        y = iris.target
+        data = datasets.load_iris()
     elif dataset_name == 'Wine':
-        wine = datasets.load_wine()
-        X = wine.data
-        y = wine.target
+        data = datasets.load_wine()
     else:
-        breast_cancer = datasets.load_breast_cancer()
-        X = breast_cancer.data
-        y = breast_cancer.target
+        data = datasets.load_breast_cancer()
+    X = data.data
+    y = data.target
     return X, y
-x, y = get_dataset(dataset_name)
+
+X, y = get_dataset(dataset)
 st.write("Shape of dataset", X.shape)
 st.write("Number of classes", len(np.unique(y)))
 
@@ -48,7 +38,8 @@ def add_parameter_ui(classifier_name):
         params['max_depth'] = max_depth
         params['n_estimators'] = n_estimators
     return params
-passs = add_parameter_ui(classifier_name, params)
+
+params = add_parameter_ui(classifier_name)
 
 def get_classifier(classifier_name, params):
     if classifier_name == 'KNN':
@@ -56,30 +47,33 @@ def get_classifier(classifier_name, params):
     elif classifier_name == 'SVM':
         clf = SVC(C=params['C'])
     else:
-        clf = RandomForestClassifier(n_estimators=params['n_estimators'], max_depth=params['max_depth'], random_state=1234)
+        clf = RandomForestClassifier(n_estimators=params['n_estimators'], 
+                                   max_depth=params['max_depth'], 
+                                   random_state=1234)
     return clf
-clf = get_classifier(classifier_name, add_parameter_ui(classifier_name))
-x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1234)
-clf.fit(x_train, y_train)
-y_pred = clf.predict(x_test)
+
+clf = get_classifier(classifier_name, params)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1234)
+clf.fit(X_train, y_train)
+y_pred = clf.predict(X_test)
 acc = accuracy_score(y_test, y_pred)
 st.write("Classifier = ", classifier_name)
 st.write("Accuracy = ", acc)
 st.write("Parameters = ", params)
 
+# PCA Visualization
 pca = PCA(2)
-X = pca.fit_transform(X)
+X_projected = pca.fit_transform(X)
 
-x1 = X_projeceted[:, 0]
-x2 = X_projecoted[:, 1]
+x1 = X_projected[:, 0]
+x2 = X_projected[:, 1]
 
 fig = plt.figure(figsize=(8, 6))
-plt.scatter(x1, x2, alpha=0.5)
+plt.scatter(x1, x2, c=y, alpha=0.5)
 plt.xlabel('Principal Component 1')
 plt.ylabel('Principal Component 2')
 plt.title('PCA of Dataset')
 st.pyplot(fig)
-plt.show()
 
 
 
