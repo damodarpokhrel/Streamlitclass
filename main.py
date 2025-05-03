@@ -1,7 +1,6 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-from sklearn import datasets
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
@@ -11,8 +10,8 @@ from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.datasets import load_iris, load_wine, load_breast_cancer
 
-st.tile("Broadway infosis app")
-st.write("Explore diffferent classifiers and dataset which one is best for you")
+st.title("Broadway infosis app")
+st.write("Explore different classifiers and dataset which one is best for you")
 dataset = st.selectbox("Select dataset", ["Iris", "Wine", "Breast Cancer"])
 st.write(f"## {dataset_name} dataset")
 classifier_name = st.slidebar.selectbox('Select classifier', ['KNN', 'SVM', 'Random Forest'])
