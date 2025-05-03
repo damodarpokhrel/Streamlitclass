@@ -1,7 +1,15 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from sklearn.datasets import load_iris
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import datasets
+from sklearn.decomposition import PCA
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
 
 st.title("Broadway infosis app")
 st.write("Explore different classifiers and dataset which one is best for you")
